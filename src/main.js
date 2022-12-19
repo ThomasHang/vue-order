@@ -12,11 +12,36 @@ import 'element-ui/lib/theme-chalk/index.css'
 import AxiosPlugin from 'common/js/Axios'
 import moment from "moment" ;
 
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+
+
+Vue.use(Viewer);
 
 
 Vue.use(AxiosPlugin)
 Vue.use(ElementUI)
 Vue.use(VueRouter)
+
+// setDeafaults配置
+Viewer.setDefaults({
+  Options: {
+    "inline": true,
+    "button": true,
+    "navbar": true,
+    "title": true,
+    "toolbar": true,
+    "tooltip": true,
+    "movable": true,
+    "zoomable": true,
+    "rotatable": true,
+    "scalable": true,
+    "transition": true,
+    "fullscreen": true,
+    "keyboard": true,
+    "url": "data-source"
+  }
+})
 
 
 Vue.filter('dateFormat', (data) => {
