@@ -198,21 +198,23 @@ export default {
       line-height: 40px
       .el-img-list
         .el-img-list-item
-          background-color: blue
-          position: absolute
-          width: 200px
+          position: relative
+          width: 100px
+          height: 100px
           display: inline-block
-          margin-left: 20px
+          margin-left: 100px
           .el-img-list__item-thumbnail
-            margin-top: 50%
-
             height: 100px
             width:  100px
           .el-img-list__item-actions
-            height: 100px
-            width:  100px
-            position: relative
-            margin-top: 50%
+            width: 50px
+            height: 50px
+            position: absolute
+            right: 0px
+            top: 0px
+
+
+            
 
         
         
