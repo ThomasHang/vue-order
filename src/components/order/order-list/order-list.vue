@@ -287,13 +287,16 @@
         <el-dialog title="物流信息" :visible.sync="kuaidiDialogFormVisible">
           <el-table :data="wuliu_list">
             <el-table-column
-              label="序号"
-              prop="id"
+              label="时间"
+              prop="time"
             ></el-table-column>
             <el-table-column
-              label="名字"
-              prop="name"
-              width="90px"
+              label="结束时间"
+              prop="ftime"
+            ></el-table-column>
+            <el-table-column
+              label="内容"
+              prop="context"
             ></el-table-column>
           </el-table>
         </el-dialog>
@@ -669,12 +672,18 @@ export default {
     queryKuaidi(deliverCode) {
       this.kuaidiDialogFormVisible = true;
 
-      //调接口
+      this.$http
+        .get("new-order/query/logisticNo/" + deliverCode)
+        .then((res) => {
+          console.log("res======>"+fromJS(res))
+          this.wuliu_list = res.dataList;
+        })
 
-      this.wuliu_list = [
-        {id:1,name:"2333"},
-        {id:2,name:"122333"}
-      ]
+    
+      // this.wuliu_list = [
+      //   {id:1,name:"2333"},
+      //   {id:2,name:"122333"}
+      // ]
     },
 
     logout() {
