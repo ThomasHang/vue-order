@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <keep-alive>
-      <goods-menu @ ="onMenuChange" class="goods_menu"></goods-menu>
+      <goods-menu @="onMenuChange" class="goods_menu"></goods-menu>
     </keep-alive>
     <div class="order_container" v-loading.body="loading">
       <section class="order_detail">
@@ -25,7 +25,7 @@
         <div class="content_box">
           <header class="header">
             <b class="subtitle">订单详情</b>
-            <el-button class="fr" type="primary" @click="saveOrder"
+            <el-button class="fr" type="primary" @click="saveRemark"
               >添加备注</el-button
             >
             <!-- <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button> -->
@@ -37,10 +37,11 @@
         <el-dialog title="备注" :visible.sync="dialogCommentForm">
           <el-input
             type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4 }"
+            :autosize="{ minRows: 2, maxRows: 10 }"
             placeholder="请输入备注"
-            :value="order_comment"
-            ref="comment_ipt"
+            v-model="remark"
+            @keyup.enter.native="updateRemark"
+
           >
           </el-input>
           <div slot="footer" class="dialog-footer">
@@ -90,8 +91,8 @@ import { fromJS } from "immutable";
 export default {
   components: {
     GoodsMenu,
-    OrderTableLayout
-    },
+    OrderTableLayout,
+  },
 
   data() {
     const { order_id } = this.$route.params;
@@ -112,7 +113,6 @@ export default {
       deliverImages: "",
       remark: "",
       deliverImages: "",
-
       dialogCommentForm: false,
     };
   },
@@ -137,8 +137,9 @@ export default {
         .get("new-order/order_detail/" + this.id)
         .then((res) => {
           if (!res) return;
-          this.$store.commit(UPDATE_ORDER_DETAIL, res)
+          this.$store.commit(UPDATE_ORDER_DETAIL, res);
           this.loading = false;
+          this.remark = res.remark;
         })
         .catch((error) => (this.loading = false));
     },
@@ -155,55 +156,34 @@ export default {
       );
     },
 
-    saveOrder() {
-      const data = {
-        sp: this.orderSpList,
-        order_id: this.order_id,
-      };
-      this.$http.post("order/save_all_goods", data).then((res) => {
-        if (!res) return;
-        if (res.success) {
-          this.$message.success("保存订单成功！");
-        } else {
-          this.$message.error("保存订单失败！");
-        }
-      });
+    saveRemark() {
+      this.dialogCommentForm = true;
     },
 
     submitComment() {
-      let comment = this.$refs.comment_ipt.$refs.textarea.value.trim();
-
-      if (comment.length > 50) {
-        return this.$message.error("最多不能超过 50字！");
-      }
-      this.remark = comment;
-      this.dialogCommentForm = false;
-      const data = {
-        remark,
-        order_id: this.order_id,
+      const DATA = {
+        id: this.id,
+        remark: this.remark,
       };
-      // this.$http.post("order/order_comment", data).then((res) => {
-      //   if (!res) return;
-      //   if (res.success) {
-      //     this.$message.success("添加备注成功！");
-      //   } else {
-      //     this.$message.error("添加备注失败！");
-      //   }
-      // });
-    },
 
-    addOtherGoods() {
-      this.isShowEditGooods = true;
-      this.goodsModelTitle = "添加第三方商品";
-    },
-
-    openEditOtherGoodsDialog(data) {
-      this.goodsModelTitle = "修改第三方商品";
-      this.isShowEditGooods = true;
-      this.$nextTick(() => {
-        this.$refs.editGoodsComponent._initGoodsData(data);
+      this.$http.put("/new-order/saveRemark", DATA).then((res) => {
+        this.remarkDialogFormVisible = false;
+        this.$router.go(`/order-list`);
       });
     },
+
+    // addOtherGoods() {
+    //   this.isShowEditGooods = true;
+    //   this.goodsModelTitle = "添加第三方商品";
+    // },
+
+    // openEditOtherGoodsDialog(data) {
+    //   this.goodsModelTitle = "修改第三方商品";
+    //   this.isShowEditGooods = true;
+    //   this.$nextTick(() => {
+    //     this.$refs.editGoodsComponent._initGoodsData(data);
+    //   });
+    // },
 
     // 关闭 Dialog 时清空 子组件里的数据
     closeEditGoodsDialog(done) {

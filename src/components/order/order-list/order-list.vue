@@ -185,6 +185,8 @@
           </el-form>
 
           备注:<el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4 }"
             v-model="remark"
             @keyup.enter.native="addOrder"
             placeholder="请输入备注"
@@ -195,114 +197,251 @@
             <el-button type="primary" @click="addOrder">确 定</el-button>
           </div>
         </el-dialog>
-      </div> 
+
+        <!--发货的弹窗-->
+        <el-dialog
+          title="请输入发货信息"
+          :visible.sync="deliverDialogFormVisible"
+        >
+          快递单号:<el-input
+            v-model="deliverCode"
+            @keyup.enter.native="updateDeliver"
+            placeholder="请输入快递单号"
+          ></el-input>
+
+          交货日期:<el-date-picker
+            v-model="deliverDate"
+            @keyup.enter.native="updateDeliver"
+            placeholder="请输入交货日期"
+          ></el-date-picker>
+
+          <el-form>
+            <el-form-item label="发货照片:" prop="img" :rules="[]">
+              <el-upload
+                ref="my-upload"
+                :class="{ 'upload-img': deliverImagesFileList.length }"
+                action="#"
+                list-type="picture-card"
+                :auto-upload="false"
+                :on-change="handleDeliverChange"
+                :on-remove="handleRemove"
+                :multiple="false"
+                :file-list="deliverImagesFileList"
+                :limit="1"
+                accept=".png, .jpg, .JPG, .JPEG, .jpeg, .PNG .GIF, .gif"
+              >
+                <i slot="default" class="el-icon-plus" />
+                <div
+                  style="width: 100%; height: 100%"
+                  slot="file"
+                  slot-scope="{ file }"
+                >
+                  <img
+                    style="width: 100%; height: 100%"
+                    class="el-upload-list__item-thumbnail"
+                    :src="file.url"
+                    alt=""
+                  />
+                  <span class="el-upload-list__item-actions">
+                    <span
+                      class="el-upload-list__item-delete"
+                      @click="handleDeliversRemove(file)"
+                    >
+                      <i class="el-icon-delete" />
+                    </span>
+                  </span>
+                </div>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="deliverDialogFormVisible = false"
+              >取 消</el-button
+            >
+            <el-button type="primary" @click="updateDeliver">确 定</el-button>
+          </div>
+        </el-dialog>
+
+        <!--备注的弹窗-->
+
+        <el-dialog title="请输入备注" :visible.sync="remarkDialogFormVisible">
+          备注:<el-input
+            type="textarea"
+            :autosize="{ minRows: 2, maxRows: 4 }"
+            v-model="remark"
+            @keyup.enter.native="updateRemark"
+            placeholder="请输入备注"
+          ></el-input>
+
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="remarkDialogFormVisible = false"
+              >取 消</el-button
+            >
+            <el-button type="primary" @click="updateRemark">确 定</el-button>
+          </div>
+        </el-dialog>
+
+        <!--快递信息-->
+
+        <el-dialog title="物流信息" :visible.sync="kuaidiDialogFormVisible">
+          <el-table :data="wuliu_list">
+            <el-table-column
+              label="序号"
+              prop="id"
+            ></el-table-column>
+            <el-table-column
+              label="名字"
+              prop="name"
+              width="90px"
+            ></el-table-column>
+          </el-table>
+        </el-dialog>
+      </div>
     </header>
 
     <div class="order_list_container">
-
       <el-table :data="order_list">
-    <el-table-column fixed="left" label="序号" prop="id"></el-table-column>
-    <el-table-column label="开工令" prop="startsTo" width="90px"></el-table-column>
+        <el-table-column fixed="left" label="序号" prop="id"></el-table-column>
+        <el-table-column
+          label="开工令"
+          prop="startsTo"
+          width="90px"
+        ></el-table-column>
 
-    <el-table-column label="企业名称" prop="companyName" width="120px"></el-table-column>
-    <el-table-column label="联系人" prop="contractPerson" width="90px"></el-table-column>
+        <el-table-column
+          label="企业名称"
+          prop="companyName"
+          width="120px"
+        ></el-table-column>
+        <el-table-column
+          label="联系人"
+          prop="contractPerson"
+          width="90px"
+        ></el-table-column>
 
-    <el-table-column label="联系方式" prop="contractPhone" width="90px"></el-table-column>
+        <el-table-column
+          label="联系方式"
+          prop="contractPhone"
+          width="90px"
+        ></el-table-column>
 
-    <el-table-column label="开票信息" prop="invoiceInfo" width="200px"></el-table-column>
-    <el-table-column label="合同生效期" prop="validateDate" width="100px">
-      <template slot-scope="scope">
-            {{scope.row.validateDate | dateFormat}}
-        </template>
-    </el-table-column>
-    <el-table-column label="合同金额" prop="contractAmount" width="90px"></el-table-column>
-    <el-table-column label="预付款" prop="prepayAmount" width="90px"></el-table-column>
-    <el-table-column label="提货款" prop="pickupAmount" width="90px"></el-table-column>
-    <el-table-column label="发货日期" prop="deliverDate" width="100px">
-      <template slot-scope="scope">
-            {{scope.row.deliverDate | dateFormat}}
-        </template>
-    </el-table-column>
+        <el-table-column
+          label="开票信息"
+          prop="invoiceInfo"
+          width="200px"
+        ></el-table-column>
+        <el-table-column label="合同生效期" prop="validateDate" width="100px">
+          <template slot-scope="scope">
+            {{ scope.row.validateDate | dateFormat }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="合同金额"
+          prop="contractAmount"
+          width="90px"
+        ></el-table-column>
+        <el-table-column
+          label="预付款"
+          prop="prepayAmount"
+          width="90px"
+        ></el-table-column>
+        <el-table-column
+          label="提货款"
+          prop="pickupAmount"
+          width="90px"
+        ></el-table-column>
+        <el-table-column label="发货日期" prop="deliverDate" width="100px">
+          <template slot-scope="scope">
+            {{ scope.row.deliverDate | dateFormat }}
+          </template>
+        </el-table-column>
 
-    <el-table-column label="备注" prop="remark" width="200px"></el-table-column>
+        <el-table-column label="发货提醒" prop="checkDeliverDate" width="100px">
+          <!-- 思路通过模板插槽，获取对应的数据，不同的数据展示不同的颜色，当然只能让显示一个（通过v-if控制） -->
 
+          <template scope="scope">
+            <div
+              v-if="scope.row.checkDeliverDate == '今天发货'"
+              style="color: red; font-weight: bold"
+            >
+              {{ scope.row.checkDeliverDate }}
+            </div>
 
+            <div
+              v-if="scope.row.checkDeliverDate == '已过发货期'"
+              style="color: gray; font-weight: bold"
+            >
+              {{ scope.row.checkDeliverDate }}
+            </div>
 
-    <!-- <el-table-column label="是否付款" prop="pay_status" width="70px">
+            <div
+              v-if="
+                scope.row.checkDeliverDate &&
+                scope.row.checkDeliverDate.indexOf('天内需发货') != -1
+              "
+              style="color: green; font-weight: bold"
+            >
+              {{ scope.row.checkDeliverDate }}
+            </div>
+          </template>
+        </el-table-column>
+
+        <el-table-column label="快递单号" prop="deliverCode" width="100px">
+          <template slot-scope="scope">
+            <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
+            <div @click="queryKuaidi(scope.row.deliverCode)">
+              {{ scope.row.deliverCode }}
+            </div>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          label="备注"
+          prop="remark"
+          width="200px"
+        ></el-table-column>
+
+        <!-- <el-table-column label="是否付款" prop="pay_status" width="70px">
         <template slot-scope="scope">
             <el-tag type="success" v-if="scope.row.pay_status=='1'">已付款</el-tag>
             <el-tag type="danger" v-else>未付款</el-tag>
         </template>
     </el-table-column> -->
 
-    <!-- <el-table-column label="是否发货" prop="is_send" width="70px"></el-table-column> -->
-    <!-- <el-table-column label="下单时间" width="140px">
+        <!-- <el-table-column label="是否发货" prop="is_send" width="70px"></el-table-column> -->
+        <!-- <el-table-column label="下单时间" width="140px">
         <template slot-scope="scope">
             {{scope.row.create_time | dateFormat}}
         </template>
     </el-table-column> -->
-    <el-table-column fixed="right" label="操作" width="200px">
-        <template slot-scope="scope">
-            <el-button size= "mini" type="primary" @click="orderDetail(scope.row)" >查看</el-button>
-            <el-button size= "mini" type="success" icon="el-icon-edit">备注</el-button>
-        </template>
-    </el-table-column>
-</el-table>
+        <el-table-column fixed="right" label="操作" width="250px">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="orderDetail(scope.row)"
+              >查看</el-button
+            >
 
-      
-        <!-- <header>
-          序号 开工令 企业名称 联系人 联系方式 开票信息 合同生效期  合同金额  预付款 提货款 发货日期 
-      </header>
-      <div
-        v-if="order_list.length"
-        class="order_box"
-        v-for="order in order_list"
-        :key="order.id"
-      >
-        <div>
-        {{ order.id }}
-        {{ order.startsTo }}
-          {{ order.companyName }}
-          {{ order.contractPerson }} 
-          {{ order.contractPhone }} 
-          {{ order.invoiceInfo }}
-          {{ order.validateDate }} 
-          {{ order.contractAmount }} 
-          {{ order.prepayAmount }}
-          {{ order.pickupAmount }}
-          {{ order.deliverDate }}
+            <el-button
+              size="mini"
+              type="primary"
+              @click="clickDeliver(scope.row)"
+              v-show="scope.row.deliverDate == null"
+              >发货</el-button
+            >
 
-          <span class="order_note text_ellipsis">
-            备注：{{ order.remark || "暂无备注" }}
-          </span>
-
-           <el-button
-            @click.stop.native="downloadPDF(order.id)"
-            size="small"
-            type="primary"
-            class="export_order_btn fr"
-            >导出订单</el-button
-          > 
-
-          <router-link
-            tag="i"
-            :to="/order-detail/ + order.id"
-            class="i fr i-edit"
-          >查看</router-link>
-        -->
-          <!-- <router-link
-            tag="ul"
-            :to="/order-detail/ + order.id"
-            class="img_list"
-          > -->
-            <!-- <li
-            v-for="img_src in order.img_list.slice(0, 7)"
-            :key="img_src"
-            :style="backgroundImage(img_src)"
-          ></li> -->
-          <!-- </router-link> -->
-        <!-- </div> -->
-      <!-- </div> -->
+            <el-button
+              size="mini"
+              type="success"
+              icon="el-icon-edit"
+              @click="clickRemark(scope.row)"
+              >备注</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
 
       <h1 v-if="!order_list.length">没有数据</h1>
 
@@ -316,12 +455,6 @@
       >
       </el-pagination>
     </div>
-
-
-
-
-
-
   </section>
 </template>
 
@@ -338,6 +471,8 @@ export default {
       contractImagesFileList: [],
       contractImagesUrlList: [],
       id: "",
+      needDeliverId: "",
+      needRemarkId: "",
       startsTo: "",
       companyName: "",
       contractPerson: "",
@@ -355,12 +490,18 @@ export default {
       deliverImagesFileList: [],
       deliverImagesUrlList: [],
 
+      checkDeliverDate: "",
+      deliverCode: "",
       search_key: "",
       page_index: 1,
       page_size: 10,
       page_count: 1,
       dialogFormVisible: false,
+      deliverDialogFormVisible: false,
+      kuaidiDialogFormVisible: false,
+      remarkDialogFormVisible: false,
       order_list: [],
+      wuliu_list: []
     };
   },
 
@@ -472,12 +613,68 @@ export default {
       });
     },
 
+    clickDeliver(order) {
+      this.needDeliverId = order.id;
+      this.deliverDialogFormVisible = true;
+    },
+
+    clickRemark(order) {
+      this.needRemarkId = order.id;
+      this.remarkDialogFormVisible = true;
+      this.remark = order.remark;
+    },
+
+    updateRemark() {
+      const DATA = {
+        id: this.needRemarkId,
+        remark: this.remark,
+      };
+
+      this.$http.put("/new-order/saveRemark", DATA).then((res) => {
+        this.remarkDialogFormVisible = false;
+        this.$router.go(`/order-list`);
+      });
+    },
+
+    updateDeliver() {
+      this.deliverImagesUrlList.forEach((item) => {
+        if (!this.deliverImages) {
+          this.deliverImages = item.url;
+        } else {
+          this.deliverImages = this.deliverImages + "," + item.url;
+        }
+      });
+
+      const DATA = {
+        id: this.needDeliverId,
+        deliverDate: this.deliverDate,
+        deliverImages: this.deliverImages,
+        deliverCode: this.deliverCode,
+      };
+
+      this.$http.put("/new-order/saveDeliver", DATA).then((res) => {
+        this.deliverDialogFormVisible = false;
+        this.$router.go(`/order-list`);
+      });
+    },
+
     downloadPDF(id) {
       window.open(process.env.BASE_API + "order/order_excel?order_id=" + id);
     },
 
-    orderDetail(order){
-      this.$router.push("/order-detail/"+order.id);
+    orderDetail(order) {
+      this.$router.push("/order-detail/" + order.id);
+    },
+
+    queryKuaidi(deliverCode) {
+      this.kuaidiDialogFormVisible = true;
+
+      //调接口
+
+      this.wuliu_list = [
+        {id:1,name:"2333"},
+        {id:2,name:"122333"}
+      ]
     },
 
     logout() {
@@ -498,7 +695,7 @@ export default {
       this.loading = true;
 
       this.$http
-        .post("new-order/page", params )
+        .post("new-order/page", params)
         .then((res) => {
           if (res) {
             const { content = [], totalPages = 1 } =
@@ -524,7 +721,7 @@ export default {
 
     // 选择页码
     onPageChange(page) {
-     if (this.onPageChangeLock) {
+      if (this.onPageChangeLock) {
         this.onPageChangeLock = false;
         return;
       }
@@ -687,5 +884,17 @@ export default {
 .page_list {
   text-align: center;
   margin: 20px auto;
+}
+
+.dangerous {
+  color: red;
+}
+
+.not-dangerous {
+  color: gray;
+}
+
+.need-notice {
+  color: yellow;
 }
 </style>
