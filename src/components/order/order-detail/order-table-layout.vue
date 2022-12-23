@@ -27,6 +27,37 @@
 	        </div>
         </li> -->
 
+        <li class = "el-img-list">
+          双方签约合同:
+          <div class="el-img-list-item" v-for="(img) in orderDetail.contractImages" :key="img">
+		               <el-image
+                    class="el-img-list__item-thumbnail" 
+                    :src="'http://localhost:8010/new-order/IoReadImage/'+img"  
+                     >
+                    </el-image>
+                    <span class="el-img-list__item-actions">
+                    <span
+                      class="el-img-list__item-delete"
+                      @click="openDialog(img)"
+                    >
+                    <i class="el-icon-zoom-in" />
+                    </span>
+                  </span>
+	        </div>
+       
+          <el-dialog title="图像预览" :visible.sync="tpDialogVisible" width="100%" height="100%" style="z-index:0;"> 
+
+          <viewer :images="orderDetail.contractImages">
+            <img  style="width: 100%; height: 100%" v-for="(item,index) in orderDetail.contractImages" :key="index" :src="'http://localhost:8010/new-order/IoReadImage/'+item" alt="">
+          </viewer>
+          </el-dialog>
+        </li>
+
+
+        <li>交货日期:
+          {{ orderDetail.deliverDate | dateFormat }}</li>
+
+
         <!-- <li>
           发货照片:
           <div v-for="(img) in orderDetail.deliverImages" :key="img">
@@ -36,9 +67,8 @@
         </li> -->
 
         <li class = "el-img-list">
-          
-          发货蹄片:
-          <div class="el-img-list-item" v-for="(img) in orderDetail.contractImages" :key="img">
+          发货图片:
+          <div class="el-img-list-item" v-for="(img) in orderDetail.deliverImages" :key="img">
 		               <el-image
                     class="el-img-list__item-thumbnail" 
                     :src="'http://localhost:8010/new-order/IoReadImage/'+img"  
@@ -153,9 +183,9 @@ export default {
     submitComment() {
       let comment = this.$refs.commentIpt.$refs.textarea.value.trim();
 
-      if (comment.length > 50) {
-        return this.$message.error("最多不能超过 50字！");
-      }
+      // if (comment.length > 50) {
+      //   return this.$message.error("最多不能超过 50字！");
+      // }
 
       this.dialogCommentForm = false;
       const params = {
@@ -196,29 +226,38 @@ export default {
       width: 100%
       font-size: 14px
       line-height: 40px
+      list-style: none
       .el-img-list
+        height: 100px
+        line-height: 100px
         .el-img-list-item
           position: relative
           width: 100px
-          height: 100px
+          height: 100%
           display: inline-block
-          margin-left: 100px
+          margin-left: 20px
           .el-img-list__item-thumbnail
             height: 100px
             width:  100px
+            vertical-align: middle
           .el-img-list__item-actions
-            width: 50px
-            height: 50px
+            width: 60px
+            height: 60px
             position: absolute
-            right: 0px
-            top: 0px
+            right: 10px
+            top: 10px
+            .el-img-list__item-delete
+              height: 100%
+              width: 100%
+              position: absolute
+              right: -9px
+              top: -2px
+
 
 
             
 
-        
-        
-
+  
 
     .btn_area
       margin: 20px

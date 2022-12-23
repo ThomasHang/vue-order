@@ -26,7 +26,7 @@
           <header class="header">
             <b class="subtitle">订单详情</b>
             <el-button class="fr" type="primary" @click="saveOrder"
-              >保存订单</el-button
+              >添加备注</el-button
             >
             <!-- <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button> -->
           </header>

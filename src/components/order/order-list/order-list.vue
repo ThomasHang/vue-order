@@ -201,7 +201,7 @@
     <div class="order_list_container">
 
       <el-table :data="order_list">
-    <el-table-column label="序号" prop="id"></el-table-column>
+    <el-table-column fixed="left" label="序号" prop="id"></el-table-column>
     <el-table-column label="开工令" prop="startsTo" width="90px"></el-table-column>
 
     <el-table-column label="企业名称" prop="companyName" width="120px"></el-table-column>
@@ -241,7 +241,7 @@
             {{scope.row.create_time | dateFormat}}
         </template>
     </el-table-column> -->
-    <el-table-column label="操作" width="200px">
+    <el-table-column fixed="right" label="操作" width="200px">
         <template slot-scope="scope">
             <el-button size= "mini" type="primary" @click="orderDetail(scope.row)" >查看</el-button>
             <el-button size= "mini" type="success" icon="el-icon-edit">备注</el-button>
@@ -357,7 +357,7 @@ export default {
 
       search_key: "",
       page_index: 1,
-      page_size: 2,
+      page_size: 10,
       page_count: 1,
       dialogFormVisible: false,
       order_list: [],
