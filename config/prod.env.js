@@ -1,4 +1,4 @@
 module.exports = {
   NODE_ENV: '"production"',
-  BASE_API: '"http://rzk-in.wo946.com/api/api/"',
+  BASE_API: '"http://124.222.246.166:8010/"',
 }
