@@ -32,7 +32,7 @@
           <div class="el-img-list-item" v-for="(img) in orderDetail.contractImages" :key="img">
 		               <el-image
                     class="el-img-list__item-thumbnail" 
-                    :src="'http://localhost:8010/new-order/IoReadImage/'+img"  
+                    :src="getUrl(img)"  
                      >
                     </el-image>
                     <span class="el-img-list__item-actions">
@@ -47,8 +47,8 @@
        
           <el-dialog title="图像预览" :visible.sync="tpDialogVisible" width="100%" height="100%" style="z-index:0;"> 
 
-          <viewer :images="orderDetail.contractImages">
-            <img  style="width: 100%; height: 100%" v-for="(item,index) in orderDetail.contractImages" :key="index" :src="'http://localhost:8010/new-order/IoReadImage/'+item" alt="">
+          <viewer :images="urlList">
+            <img  style="width: 100%; height: 100%" v-for="(item) in urlList" :key="item" :src="getUrl(item)" alt="">
           </viewer>
           </el-dialog>
         </li>
@@ -71,7 +71,7 @@
           <div class="el-img-list-item" v-for="(img) in orderDetail.deliverImages" :key="img">
 		               <el-image
                     class="el-img-list__item-thumbnail" 
-                    :src="'http://localhost:8010/new-order/IoReadImage/'+img"  
+                    :src="getUrl(img)"  
                      >
                     </el-image>
                     <span class="el-img-list__item-actions">
@@ -86,10 +86,11 @@
        
           <el-dialog title="图像预览" :visible.sync="tpDialogVisible" width="100%" height="100%" style="z-index:0;"> 
 
-          <viewer :images="orderDetail.deliverImages">
-            <img  style="width: 100%; height: 100%" v-for="(item,index) in orderDetail.deliverImages" :key="index" :src="'http://localhost:8010/new-order/IoReadImage/'+item" alt="">
+          <viewer :images="urlList">
+            <img  style="width: 100%; height: 100%" v-for="(item) in urlList" :key="item" :src="getUrl(item)" alt="">
           </viewer>
           </el-dialog>
+
         </li>
 
 
@@ -144,13 +145,22 @@ export default {
   },
 
   created() {    
-    console.log("----------------------"+this.orderDetail)
     },
 
   methods: {
     changeOrderDetail(value, key, keyIndex) {
       const params = { value, key, keyIndex };
       this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params);
+    },
+
+    getUrl(item){
+
+      if (!item){
+        console.log("--------为空不执行呀--------------")
+        return  "~common/image/default.png"
+      }else{
+        return process.env.BASE_API + "new-order/IoReadImage/" + item;
+      }
     },
 
     deleteOrder(sku) {

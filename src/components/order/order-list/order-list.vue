@@ -390,7 +390,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="快递单号" prop="deliverCode" width="100px">
+        <el-table-column label="快递单号" prop="deliverCode" width="200px">
           <template slot-scope="scope">
             <!-- 注意：这个地方要传参数进去才能进行操作  函数名称(scope.row) -->
             <div @click="queryKuaidi(scope.row.deliverCode)">
