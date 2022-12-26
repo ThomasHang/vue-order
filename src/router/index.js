@@ -7,7 +7,7 @@ const OrderDetail = () => import('order/order-detail/order-detail')
 const routers = [
   {
     path: '/',
-    redirect: '/order-list'
+    redirect: '/login'
   },
 
   {

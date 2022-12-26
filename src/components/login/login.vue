@@ -51,7 +51,7 @@ import { TOKEN } from "store/mutation-types";
           if(res) {
           console.log("restoken-====="+res.token)
           localStorage.setItem('token',res.token)  
-          this.$router.push('/')
+          this.$router.push('/order-list')
           }
         })
       }
