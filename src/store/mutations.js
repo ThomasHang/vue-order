@@ -43,6 +43,10 @@ const matutaions = {
   [types.FETCH_GOODS_COLORS_LIST](state, newColorsList) {
     state.goodsColorsList = newColorsList
   },
+  
+  [types.TOKEN](state, token) {
+    state.token = token
+  },
 }
 
 export default matutaions

@@ -16,6 +16,7 @@ const state = {
   orderDetail: [],
   goodsCategoryList: [],
   goodsColorsList: [],
+  token:''
 }
 
 export default state

@@ -17,6 +17,9 @@
   </div>
 </template>
 <script>
+
+import { TOKEN } from "store/mutation-types";
+
   export default {
     data() {
       return {
@@ -44,9 +47,11 @@
          account: userName,
          password: pwd,
         }
-        this.$http.post('api/common/login',data).then(res => {
+        this.$http.post('api/common/login',data).then((res)=> {
           if(res) {
-            this.$router.push('/')
+          console.log("restoken-====="+res.token)
+          localStorage.setItem('token',res.token)  
+          this.$router.push('/')
           }
         })
       }

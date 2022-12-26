@@ -1,17 +1,19 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import state from '../../store/state'
+
 
 export const Axios = axios.create({
   baseURL: process.env.BASE_API,
   timeout: 5000,
   // withCredentials: true, //带上 cookie
   headers:{
-    'token':"xiaobai",
+    'token': localStorage.getItem('token'),
     'Content-Type':'application/json;charset=utf-8'
   }
 })
 
-Axios.interceptors.request.use(config => {
+Axios.interceptors.request.use((config,state) => {
   //POST传参序列化
   if(config.method  === 'post'){
     // 数据序列化成表单
