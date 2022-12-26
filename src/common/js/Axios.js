@@ -8,12 +8,13 @@ export const Axios = axios.create({
   timeout: 5000,
   // withCredentials: true, //带上 cookie
   headers:{
-    'token': localStorage.getItem('token'),
     'Content-Type':'application/json;charset=utf-8'
   }
 })
 
-Axios.interceptors.request.use((config,state) => {
+Axios.interceptors.request.use(config => {
+   config.headers.token = localStorage.getItem('token');
+
   //POST传参序列化
   if(config.method  === 'post'){
     // 数据序列化成表单

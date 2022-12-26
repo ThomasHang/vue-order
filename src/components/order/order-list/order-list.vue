@@ -5,7 +5,7 @@
         <router-link to="/"
           ><img src="~common/image/logo.png" class="logo"
         /></router-link>
-        <el-button class="fr logout" @click="logout">登录</el-button>
+        <el-button class="fr logout" @click="logout">注销登录</el-button>
         <el-input
           class="search_input fr"
           placeholder="请输入订单名称"
@@ -692,6 +692,7 @@ export default {
         for (let i = keys.length; i--; )
           document.cookie = keys[i] + "=0;expires=" + new Date(0).toUTCString();
       }
+      localStorage.removeItem("token")
       this.$router.push("/login");
     },
 
