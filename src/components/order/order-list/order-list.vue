@@ -22,6 +22,13 @@
           >新建订单</el-button
         >
 
+        <el-button
+          class="add_order fr"
+          @click="download"
+          type="primary"
+          >下载订单</el-button
+        >
+
         <el-dialog title="请输入订单信息" :visible.sync="dialogFormVisible">
           序号:<el-input
             v-model="id"
@@ -307,17 +314,20 @@
       <el-table :data="order_list">
         <el-table-column fixed="left" label="序号" prop="id"></el-table-column>
         <el-table-column
+          fixed="left"
           label="开工令"
           prop="startsTo"
           width="90px"
         ></el-table-column>
 
         <el-table-column
+          fixed="left"
           label="企业名称"
           prop="companyName"
           width="120px"
         ></el-table-column>
         <el-table-column
+          fixed="left"
           label="联系人"
           prop="contractPerson"
           width="90px"
@@ -664,6 +674,21 @@ export default {
     downloadPDF(id) {
       window.open(process.env.BASE_API + "order/order_excel?order_id=" + id);
     },
+
+    download(){
+      console.log("调用接口请求1111")
+      window.open('http://124.222.246.166:8010/new-order/export')
+//       this.$http.get("/new-order/export",{
+//         responseType:"blob", 
+//         headers: {
+//           'Content-Type': 'application/json;charset=utf-8'
+//         }
+// })
+//         .then((res) => {
+        
+//       })
+  } 
+    ,
 
     orderDetail(order) {
       this.$router.push("/order-detail/" + order.id);
