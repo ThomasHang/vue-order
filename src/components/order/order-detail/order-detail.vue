@@ -17,11 +17,6 @@
         <div class="content_box">
           <header class="header">
             <span class="subtitle">订单序号：{{ id }}</span>
-            <!-- <b class="subtitle">订单详情</b> -->
-            <!-- <el-button class="fr" type="primary" @click="saveRemark"
-              >添加备注</el-button> -->
-          
-            <!-- <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button> -->
           </header>
           <order-table-layout/>
         </div>
@@ -33,7 +28,6 @@
             placeholder="请输入备注"
             v-model="remark"
             @keyup.enter.native="updateRemark"
-
           >
           </el-input>
           <div slot="footer" class="dialog-footer">
@@ -41,48 +35,7 @@
             <el-button type="primary" @click="submitComment">确 定</el-button>
           </div>
         </el-dialog>
-
-
-        <!-- <el-dialog title="确认保存" :visible.sync="dialogSaveForm">
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogSaveForm = false">取 消</el-button>
-            <el-button type="primary" @click="saveOrder">确 定</el-button>
-          </div> -->
-        </el-dialog>
-
-
-
-
-
       </section>
-
-      <!-- <section class="other_goods_list">
-        <div class="content_box">
-          <header class="header">
-            <b class="subtitle">第三方商品</b>
-            <el-button class="fr" type="primary" @click="addOtherGoods">添加商品</el-button>
-          </header>
-
-          <other-goods-layout
-            @deleteGoods="_fetchOrderDetail"
-            @editGoods="openEditOtherGoodsDialog"
-            v-for="(goods, index) in otherOrderList"
-            :key="index"
-            :goods="goods">
-          </other-goods-layout>
-        </div>
-
-        <el-dialog
-          :visible.sync="isShowEditGooods"
-          size="full"
-          :before-close="closeEditGoodsDialog"
-        >
-          <header slot="title" class="dialogTitle">
-            <p class="title">{{goodsModelTitle}}<small class="small">（按 ESC 关闭）</small></p>
-          </header>
-          <edit-goods-layout ref="editGoodsComponent"></edit-goods-layout>
-        </el-dialog>
-      </section> -->
     </div>
   </div>
 </template>
@@ -209,7 +162,7 @@ export default {
   width: 100%
   min-height: 100vh
   display: flex
-
+  position: relative
   .goods_menu
     width: 20%
 
@@ -249,19 +202,17 @@ export default {
     padding: 20px
     width: 100%
     height: auto
-
     .header
       margin-bottom: 10px
       width: 100%
       height: 36px
       line-height: 36px
-
       .subtitle
-        font-size: 18px
-
+        font-size: 20px
+        font-weight: 900
     .order_table
       width: 100%
-      height: auto
+      height: 100%
 
 .fr 
   margin-left: 10px      
