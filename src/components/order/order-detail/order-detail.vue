@@ -7,31 +7,23 @@
       <section class="order_detail">
         <nav class="nav_container">
           <div class="box">
-            <el-button @click="$router.push('/')" type="text" icon="arrow-left"
+            <el-button @click="$router.push('/order-list')" type="text" icon="arrow-left"
               >返回订单列表</el-button
             >
-            <span class="order_name">订单序号：{{ id }}</span>
-            <p
-              class="order_comment text_ellipsis"
-              @dblclick="dialogCommentForm = true"
-            >
-              备注:
-              <span class="small">{{ remark || "暂无备注" }}</span>
-            </p>
             <!-- <el-button @click="printPdf" class="pdf fr">导出订单</el-button> -->
           </div>
         </nav>
 
         <div class="content_box">
           <header class="header">
-            <b class="subtitle">订单详情</b>
-            <el-button class="fr" type="primary" @click="saveRemark"
-              >添加备注</el-button
-            >
+            <span class="subtitle">订单序号：{{ id }}</span>
+            <!-- <b class="subtitle">订单详情</b> -->
+            <!-- <el-button class="fr" type="primary" @click="saveRemark"
+              >添加备注</el-button> -->
+          
             <!-- <el-button class="fr mr30" type="text"><strong>合计：{{orderAmount}}</strong></el-button> -->
           </header>
-
-          <order-table-layout></order-table-layout>
+          <order-table-layout/>
         </div>
 
         <el-dialog title="备注" :visible.sync="dialogCommentForm">
@@ -49,6 +41,19 @@
             <el-button type="primary" @click="submitComment">确 定</el-button>
           </div>
         </el-dialog>
+
+
+        <!-- <el-dialog title="确认保存" :visible.sync="dialogSaveForm">
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogSaveForm = false">取 消</el-button>
+            <el-button type="primary" @click="saveOrder">确 定</el-button>
+          </div> -->
+        </el-dialog>
+
+
+
+
+
       </section>
 
       <!-- <section class="other_goods_list">
@@ -114,6 +119,7 @@ export default {
       remark: "",
       deliverImages: "",
       dialogCommentForm: false,
+      dialogSaveForm: false,
     };
   },
 
@@ -172,6 +178,7 @@ export default {
       });
     },
 
+  
     // addOtherGoods() {
     //   this.isShowEditGooods = true;
     //   this.goodsModelTitle = "添加第三方商品";
@@ -204,9 +211,9 @@ export default {
   display: flex
 
   .goods_menu
-    width: 220px
+    width: 20%
 
-    .order_container
+  .order_container
       flex: 1
 
   .nav_container
@@ -255,4 +262,7 @@ export default {
     .order_table
       width: 100%
       height: auto
+
+.fr 
+  margin-left: 10px      
 </style>

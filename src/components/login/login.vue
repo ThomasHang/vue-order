@@ -49,7 +49,6 @@ import { TOKEN } from "store/mutation-types";
         }
         this.$http.post('api/common/login',data).then((res)=> {
           if(res) {
-          console.log("restoken-====="+res.token)
           localStorage.setItem('token',res.token)  
           this.$router.push('/order-list')
           }

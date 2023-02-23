@@ -1,77 +1,121 @@
 <template>
-  <section class="other_goods_container">
     <div class="goods_info">
       <ul class="item_list fl">
-        <li>序号:{{ orderDetail.id }}</li>
-        <li>开工令:{{ orderDetail.startsTo }}</li>
-        <li>公司名称:{{ orderDetail.companyName }}</li>
-        <li>联系人:{{ orderDetail.contractPerson }}</li>
-        <li>联系电话:{{ orderDetail.contractPhone }}</li>
-        <li>开票资料:{{ orderDetail.invoiceInfo }}</li>
-        <li>
-          合同生效期:
-          {{ orderDetail.validateDate | dateFormat }}
-        </li>
-        <li>合同金额:{{ orderDetail.contractAmount }}</li>
-        <li>预付款:{{ orderDetail.prepayAmount }}</li>
-        <li>提货款:{{ orderDetail.pickupAmount }}</li>
-
-        <!-- <li>
-          签约合同:
-          <div v-for="(img) in orderDetail.contractImages" :key="img">
-		          <img  style="width: 150px; height: 150px"
-                    class="el-upload-list__item-thumbnail" :src="'http://localhost:8010/new-order/IoReadImage/'+img"/>
-
-                    <i class="el-icon-delete" />
-
-	        </div>
-        </li> -->
-
+          <li class = "item_li">
+          开工令:
+            <el-input v-model="orderDetail.startsTo" :disabled="modifyVisible" style="width: 100px;" class="filter-item" clearable />
+          </li>
+          <li>
+          公司名称: <el-input v-model="orderDetail.companyName" :disabled="modifyVisible" style="width: 100px;" class="filter-item"  clearable />
+          </li>
+          <li>
+          联系人: <el-input v-model="orderDetail.contractPerson" :disabled="modifyVisible" style="width: 100px;" class="filter-item" clearable />
+          </li>
+          <li>
+          联系电话: <el-input v-model="orderDetail.contractPhone" :disabled="modifyVisible" style="width: 100px;" class="filter-item" clearable />
+          </li>
+          <li>
+          开票资料: <el-input v-model="orderDetail.invoiceInfo" :disabled="modifyVisible" style="width: 100px;" class="filter-item" clearable />
+          </li>
+          <li>
+          合同生效期:<el-date-picker
+                v-model="orderDetail.validateDate"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入合同生效期"
+                :disabled="modifyVisible"
+              ></el-date-picker>
+            </li>
+          <li>
+            合同金额: <el-input v-model="orderDetail.contractAmount" :disabled="modifyVisible" style="width: 100px;" class="filter-item"  clearable />
+          </li>
+          <li>
+            预付款: <el-input v-model="orderDetail.prepayAmount" :disabled="modifyVisible" style="width: 100px;" class="filter-item" clearable />
+          </li>
+          <li>
+            提货款: <el-input v-model="orderDetail.pickupAmount" :disabled="modifyVisible" style="width: 100px;" class="filter-item" clearable />
+          </li>
+   
         <li class = "el-img-list">
           双方签约合同:
-          <div class="el-img-list-item" v-for="(img) in orderDetail.contractImages" :key="img">
-		               <el-image
-                    class="el-img-list__item-thumbnail" 
-                    :src="getUrl(img)"  
-                     >
-                    </el-image>
-                    <span class="el-img-list__item-actions">
-                    <span
-                      class="el-img-list__item-delete"
-                      @click="openDialog(img)"
-                    >
-                    <i class="el-icon-zoom-in" />
-                    </span>
-                  </span>
-	        </div>
-       
-          <el-dialog title="图像预览" :visible.sync="tpDialogVisible" width="100%" height="100%" style="z-index:0;"> 
+          <div class="el-img-list-item">
+                  <div v-for="(img) in orderDetail.contractImages" :key="img">
+                          <el-image
+                            class="el-img-list__item-thumbnail" 
+                            :src="getUrl(img)"  
+                            >
+                            </el-image>
+                            <span class="el-img-list__item-actions">
+                            <span
+                              class="el-img-list__item-delete"
+                              @click="openDialog(img)"
+                            >
+                            <i class="el-icon-zoom-in" />
+                            </span>
+                          </span>
+                  </div>
+                  <div>
+                        <el-upload
+                          ref="my-upload"
+                          :class="{ 'upload-img': contractImagesFileList.length }"
+                          action="#"
+                          list-type="picture-card"
+                          :auto-upload="false"
+                          :on-change="handleChange"
+                          :on-remove="handleRemove"
+                          :multiple="false"
+                          :file-list="contractImagesFileList"
+                          :limit="5"
+                          accept=".png, .jpg, .JPG, .JPEG, .jpeg, .PNG .GIF, .gif"
+                        >
+                          <i slot="default" class="el-icon-plus" />
+                          <div
+                            style="width: 100%; height: 100%"
+                            slot="file"
+                            slot-scope="{ file }"
+                          >
+                            <img
+                              style="width: 100%; height: 100%"
+                              class="el-upload-list__item-thumbnail"
+                              :src="file.url"
+                              alt=""
+                            />
+                            <span class="el-upload-list__item-actions">
+                              <span
+                                class="el-upload-list__item-delete"
+                                @click="handleRemove(file)"
+                              >
+                                <i class="el-icon-delete" />
+                              </span>
+                            </span>
+                          </div>
+                        </el-upload>
+                      </div>
 
-          <viewer :images="urlList">
-            <img  style="width: 100%; height: 100%" v-for="(item) in urlList" :key="item" :src="getUrl(item)" alt="">
-          </viewer>
-          </el-dialog>
+
+                <el-dialog title="图像预览" :visible.sync="tpDialogVisible" width="100%" height="100%" style="z-index:0;"> 
+                    <viewer :images="urlList">
+                      <img  style="width: 100%; height: 100%" v-for="(item) in urlList" :key="item" :src="getUrl(item)" alt="">
+                    </viewer>
+                </el-dialog>
+          </div>
+
         </li>
 
+        <li>
+          交货日期:<el-date-picker
+            v-model="orderDetail.deliverDate"
+            @keyup.enter.native="addOrder"
+            placeholder="请输入交货期"
+            :disabled="modifyVisible"
+          ></el-date-picker>
+        </li>
 
-        <li>交货日期:
-          {{ orderDetail.deliverDate | dateFormat }}</li>
-
-
-        <!-- <li>
-          发货照片:
-          <div v-for="(img) in orderDetail.deliverImages" :key="img">
-		          <img  style="width: 150px; height: 150px"
-                    class="el-upload-list__item-thumbnail" :src="'http://localhost:8010/new-order/IoReadImage/'+img"/>
-	        </div>
-        </li> -->
-
-        <li class = "el-img-list">
+        <!-- <li class = "el-img-list">
           发货图片:
           <div class="el-img-list-item" v-for="(img) in orderDetail.deliverImages" :key="img">
 		               <el-image
                     class="el-img-list__item-thumbnail" 
-                    :src="getUrl(img)"  
+                    :src="getUrl(img)"
                      >
                     </el-image>
                     <span class="el-img-list__item-actions">
@@ -90,30 +134,31 @@
             <img  style="width: 100%; height: 100%" v-for="(item) in urlList" :key="item" :src="getUrl(item)" alt="">
           </viewer>
           </el-dialog>
+        </li> -->
 
+        <li>
+        备注: <el-input v-model="orderDetail.remark" :disabled="modifyVisible" style="width: 100px;" class="filter-item" />
         </li>
 
-
-  
-
       </ul>
+      <div class="btn_area fr">
+        <!-- <el-button class="edit_button" @click="editOtherGoods">修改</el-button>
+        <el-button @click="deleteGoods" type="danger">删除</el-button> -->
+        <el-button type="primary" @click="modify" 
+            :style="{display: modifyDisplay}"
+              >编辑</el-button>
+              <el-button type="primary" @click="saveOrderDetail(orderDetail)"
+              :style="{display:saveDisplay}"
+              >保存</el-button>
+      </div>
 
-      <!-- <div class="btn_area fr">
-        <el-button class="edit_button" @click="editOtherGoods">修改</el-button>
-        <el-button @click="deleteGoods" type="danger">删除</el-button>
-      </div> -->
     </div>
-
-    <!-- <ul class="img_list">
-      <li v-for="(img, index) in goods.extendGoodsImgVOs" :key="index" :style="backgroundImage(img.imgPath)"></li>
-    </ul> -->
-  </section>
 </template>
 
 <script>
 import { backgroundImage } from "common/js/mixins";
 import { mapGetters, mapState } from "vuex";
-import { UPDATE_ORDER_DETAIL_INDEX_VALUE } from "store/mutation-types";
+import { UPDATE_ORDER_DETAIL } from "store/mutation-types";
 import { fromJS } from "immutable";
 import orderDetailVue from "./order-detail.vue";
 
@@ -122,6 +167,10 @@ export default {
   props: ["id", "contractImages"],
   data() {
     return {
+      contractImagesFileList: [],
+      modifyDisplay: '',
+      saveDisplay: 'none',
+      modifyVisible: true,
       tpDialogVisible:false,
       dialogCommentForm: false,
       currentEditCommentIndex: 0,
@@ -145,22 +194,23 @@ export default {
   },
 
   created() {    
-    },
+    console.log("---contractImages--" + contractImages)
+  },
 
   methods: {
-    changeOrderDetail(value, key, keyIndex) {
-      const params = { value, key, keyIndex };
-      this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params);
-    },
 
+    // changeOrderDetail(value) {
+    //   console.log("-------------"+value)
+    //   this.$store.commit(UPDATE_ORDER_DETAIL, params);
+    // },
+
+    // 拼接图片的地址
     getUrl(item){
-
-      if (!item){
-        console.log("--------为空不执行呀--------------")
-        return  "~common/image/default.png"
-      }else{
-        return process.env.BASE_API + "new-order/IoReadImage/" + item;
-      }
+      // if (!item){
+        return  require('../../../common/image/default.png')
+      // }else{
+      //   return process.env.BASE_API + "new-order/IoReadImage/" + item;
+      // }
     },
 
     deleteOrder(sku) {
@@ -179,6 +229,25 @@ export default {
       });
     },
 
+    // 修改编辑状态
+    modify(){
+      this.modifyVisible = false;
+      this.saveDisplay='';
+      this.modifyDisplay='none';
+    },
+
+    saveOrderDetail(orderDetail) {
+      orderDetail.contractImages = null;
+      orderDetail.deliverImages = null;
+      orderDetail.createDate = null;
+      orderDetail.updateDate = null;
+      this.$http.post("/new-order/save", orderDetail).then((res) => {
+        this.modifyVisible = true;
+        this.saveDisplay='none';
+        this.modifyDisplay='';
+      });
+    },
+
     openCommentDialog(index) {
       this.dialogCommentForm = true;
       this.currentEditCommentIndex = index;
@@ -190,53 +259,54 @@ export default {
       this.tpDialogVisible=true
     },
 
-    submitComment() {
-      let comment = this.$refs.commentIpt.$refs.textarea.value.trim();
+    // submitComment() {
+    //   let comment = this.$refs.commentIpt.$refs.textarea.value.trim();
 
-      // if (comment.length > 50) {
-      //   return this.$message.error("最多不能超过 50字！");
-      // }
+    //   // if (comment.length > 50) {
+    //   //   return this.$message.error("最多不能超过 50字！");
+    //   // }
 
-      this.dialogCommentForm = false;
-      const params = {
-        value: comment,
-        key: "comment",
-        keyIndex: this.currentEditCommentIndex,
-      };
-      this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params);
-      const data = {
-        order_id: this.$route.params.order_id,
-        sku: this.orderDetail[this.currentEditCommentIndex].sku,
-        comment,
-      };
-      this.$http.post("order/order_detail_comment", data).then((res) => {
-        if (!res) return;
-        if (res.success) {
-          this.$message.success("添加备注成功！");
-        } else {
-          this.$message.error("添加备注失败！");
-        }
-      });
-    },
+    //   this.dialogCommentForm = false;
+    //   const params = {
+    //     value: comment,
+    //     key: "comment",
+    //     keyIndex: this.currentEditCommentIndex,
+    //   };
+    //   this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params);
+    //   const data = {
+    //     order_id: this.$route.params.order_id,
+    //     sku: this.orderDetail[this.currentEditCommentIndex].sku,
+    //     comment,
+    //   };
+    //   this.$http.post("order/order_detail_comment", data).then((res) => {
+    //     if (!res) return;
+    //     if (res.success) {
+    //       this.$message.success("添加备注成功！");
+    //     } else {
+    //       this.$message.error("添加备注失败！");
+    //     }
+    //   });
+    // },
   },
 };
 </script>
 
 <style lang="sass" scoped>
-.other_goods_container
-  margin-bottom: 20px
-  width: auto
-  height: auto
-  border: 1px #ddd solid
-
   .goods_info
-    height: 1000px
+    border-top: 1px solid
+    width: auto
+    height: auto
+    margin-bottom: 200px
 
     .item_list
       width: 100%
-      font-size: 14px
-      line-height: 40px
+      font-size: 18px
       list-style: none
+      .item_li
+        height: 50px
+        width: 500px
+        background-color: red
+      
       .el-img-list
         height: 100px
         line-height: 100px
@@ -263,24 +333,10 @@ export default {
               right: -9px
               top: -2px
 
-
-
-            
-
-  
-
     .btn_area
       margin: 20px
 
       .edit_button
         margin-right: 20px
 
-  .img_list
-    li
-      display: inline-block
-      margin-right: 10px
-      margin-bottom: 10px
-      width: 250px
-      height: 250px
-  
 </style>

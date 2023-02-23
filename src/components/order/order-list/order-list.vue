@@ -89,23 +89,6 @@
           ></el-input-number>
 
           <el-form>
-            <!-- <el-form-item> -->
-            <!-- <el-upload
-                ref="upfile"
-                style="display: inline"
-                :auto-upload="false"
-                :on-change="handleChange"
-                :on-remove="handleRemove"
-                :file-list="contractImagesFileList"
-                action="#"
-              >
-                <el-button type="success">选择文件</el-button>
-              </el-upload>
-              <el-button type="success" @click="uploadContractImages"
-                >点击上传</el-button
-              > -->
-            <!-- </el-form-item> -->
-
             <el-form-item label="双方盖章合同:" prop="img" :rules="[]">
               <el-upload
                 ref="my-upload"
@@ -271,7 +254,6 @@
         </el-dialog>
 
         <!--备注的弹窗-->
-
         <el-dialog title="请输入备注" :visible.sync="remarkDialogFormVisible">
           备注:<el-input
             type="textarea"
@@ -290,7 +272,6 @@
         </el-dialog>
 
         <!--快递信息-->
-
         <el-dialog title="物流信息" :visible.sync="kuaidiDialogFormVisible">
           <el-table :data="wuliu_list">
             <el-table-column
@@ -415,19 +396,6 @@
           width="200px"
         ></el-table-column>
 
-        <!-- <el-table-column label="是否付款" prop="pay_status" width="70px">
-        <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.pay_status=='1'">已付款</el-tag>
-            <el-tag type="danger" v-else>未付款</el-tag>
-        </template>
-    </el-table-column> -->
-
-        <!-- <el-table-column label="是否发货" prop="is_send" width="70px"></el-table-column> -->
-        <!-- <el-table-column label="下单时间" width="140px">
-        <template slot-scope="scope">
-            {{scope.row.create_time | dateFormat}}
-        </template>
-    </el-table-column> -->
         <el-table-column fixed="right" label="操作" width="250px">
           <template slot-scope="scope">
             <el-button
@@ -456,7 +424,7 @@
         </el-table-column>
       </el-table>
 
-      <h1 v-if="!order_list.length">没有数据</h1>
+      <h1 v-if="!order_list.length">暂无数据</h1>
 
       <el-pagination
         v-if="order_list.length"
@@ -480,7 +448,6 @@ export default {
     return {
       loading: false,
       order_name: "",
-
       contractImagesFileList: [],
       contractImagesUrlList: [],
       id: "",
@@ -611,7 +578,7 @@ export default {
         remark: this.remark,
       };
 
-      this.$http.put("/new-order/save", DATA).then((res) => {
+      this.$http.post("/new-order/save", DATA).then((res) => {
         this.dialogFormVisible = false;
         this.$router.go(`/order-list`);
 
@@ -671,24 +638,9 @@ export default {
       });
     },
 
-    downloadPDF(id) {
-      window.open(process.env.BASE_API + "order/order_excel?order_id=" + id);
-    },
-
     download(){
-      console.log("调用接口请求1111")
-      window.open('http://124.222.246.166:8010/new-order/export')
-//       this.$http.get("/new-order/export",{
-//         responseType:"blob", 
-//         headers: {
-//           'Content-Type': 'application/json;charset=utf-8'
-//         }
-// })
-//         .then((res) => {
-        
-//       })
-  } 
-    ,
+      window.open(process.env.BASE_API +'/new-order/export')
+    },
 
     orderDetail(order) {
       this.$router.push("/order-detail/" + order.id);
@@ -700,15 +652,8 @@ export default {
       this.$http
         .get("new-order/query/logisticNo/" + deliverCode)
         .then((res) => {
-          console.log("res======>"+fromJS(res))
           this.wuliu_list = res.dataList;
         })
-
-    
-      // this.wuliu_list = [
-      //   {id:1,name:"2333"},
-      //   {id:2,name:"122333"}
-      // ]
     },
 
     logout() {
@@ -776,6 +721,7 @@ export default {
         this.$message("上传成功");
       });
     },
+
     //通过onchanne触发方法获得文件列表
     handleChange(file) {
       this.contractImagesFileList.push(file);
