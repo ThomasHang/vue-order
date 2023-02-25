@@ -22,10 +22,7 @@
           >新建订单</el-button
         >
 
-        <el-button
-          class="add_order fr"
-          @click="download"
-          type="primary"
+        <el-button class="add_order fr" @click="download" type="primary"
           >下载订单</el-button
         >
 
@@ -274,18 +271,9 @@
         <!--快递信息-->
         <el-dialog title="物流信息" :visible.sync="kuaidiDialogFormVisible">
           <el-table :data="wuliu_list">
-            <el-table-column
-              label="时间"
-              prop="time"
-            ></el-table-column>
-            <el-table-column
-              label="结束时间"
-              prop="ftime"
-            ></el-table-column>
-            <el-table-column
-              label="内容"
-              prop="context"
-            ></el-table-column>
+            <el-table-column label="时间" prop="time"></el-table-column>
+            <el-table-column label="结束时间" prop="ftime"></el-table-column>
+            <el-table-column label="内容" prop="context"></el-table-column>
           </el-table>
         </el-dialog>
       </div>
@@ -481,7 +469,7 @@ export default {
       kuaidiDialogFormVisible: false,
       remarkDialogFormVisible: false,
       order_list: [],
-      wuliu_list: []
+      wuliu_list: [],
     };
   },
 
@@ -638,8 +626,8 @@ export default {
       });
     },
 
-    download(){
-      window.open(process.env.BASE_API +'/new-order/export')
+    download() {
+      window.open(process.env.BASE_API + "/new-order/export");
     },
 
     orderDetail(order) {
@@ -653,7 +641,7 @@ export default {
         .get("new-order/query/logisticNo/" + deliverCode)
         .then((res) => {
           this.wuliu_list = res.dataList;
-        })
+        });
     },
 
     logout() {
@@ -662,7 +650,7 @@ export default {
         for (let i = keys.length; i--; )
           document.cookie = keys[i] + "=0;expires=" + new Date(0).toUTCString();
       }
-      localStorage.removeItem("token")
+      localStorage.removeItem("token");
       this.$router.push("/login");
     },
 
@@ -736,6 +724,7 @@ export default {
 
     //通过onchanne触发方法获得文件列表
     handleRemove(file) {
+      this.contractImagesFileList.removeItem(file);
       const index2 = this.contractImagesUrlList.indexOf(file.url);
       this.contractImagesUrlList.splice(index2 - 1, 1);
     },

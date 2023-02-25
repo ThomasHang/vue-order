@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <keep-alive>
-      <goods-menu @="onMenuChange" class="goods_menu"></goods-menu>
+      <goods-menu @click="onMenuChange" class="goods_menu"></goods-menu>
     </keep-alive>
     <div class="order_container" v-loading.body="loading">
       <section class="order_detail">
@@ -18,23 +18,9 @@
           <header class="header">
             <span class="subtitle">订单序号：{{ id }}</span>
           </header>
-          <order-table-layout/>
         </div>
 
-        <el-dialog title="备注" :visible.sync="dialogCommentForm">
-          <el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 10 }"
-            placeholder="请输入备注"
-            v-model="remark"
-            @keyup.enter.native="updateRemark"
-          >
-          </el-input>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogCommentForm = false">取 消</el-button>
-            <el-button type="primary" @click="submitComment">确 定</el-button>
-          </div>
-        </el-dialog>
+        <order-table-layout/>
       </section>
     </div>
   </div>
@@ -106,53 +92,6 @@ export default {
     onMenuChange(query) {
       this.$router.push({ path: "/goods-list/" + this.order_id, query });
     },
-
-    printPdf() {
-      window.open(
-        process.env.BASE_API +
-          "order/order_excel?order_id=" +
-          this.$route.params.order_id
-      );
-    },
-
-    saveRemark() {
-      this.dialogCommentForm = true;
-    },
-
-    submitComment() {
-      const DATA = {
-        id: this.id,
-        remark: this.remark,
-      };
-
-      this.$http.put("/new-order/saveRemark", DATA).then((res) => {
-        this.remarkDialogFormVisible = false;
-        this.$router.go(`/order-list`);
-      });
-    },
-
-  
-    // addOtherGoods() {
-    //   this.isShowEditGooods = true;
-    //   this.goodsModelTitle = "添加第三方商品";
-    // },
-
-    // openEditOtherGoodsDialog(data) {
-    //   this.goodsModelTitle = "修改第三方商品";
-    //   this.isShowEditGooods = true;
-    //   this.$nextTick(() => {
-    //     this.$refs.editGoodsComponent._initGoodsData(data);
-    //   });
-    // },
-
-    // 关闭 Dialog 时清空 子组件里的数据
-    closeEditGoodsDialog(done) {
-      if (this.$refs.editGoodsComponent.isEditedGoods) {
-        this._fetchOrderDetail();
-      }
-      this.$refs.editGoodsComponent._clearGoodsData();
-      done();
-    },
   },
 };
 </script>
@@ -164,7 +103,7 @@ export default {
   display: flex
   position: relative
   .goods_menu
-    width: 20%
+    width: 10%
 
   .order_container
       flex: 1
@@ -172,48 +111,20 @@ export default {
   .nav_container
     padding: 0 20px
     width: 100%
-    height: 50px
+    height: 40px
     background: #eee
 
-    .order_name
-      margin-left: 30px
-      margin-right: 20px
-      line-height: 50px
-      font-size: 16px
-
-    .order_comment
-      width: 500px
-      overflow: hidden
-      display: inline-block
-      vertical-align: top
-      line-height: 50px
-      font-size: 16px
-      color: #20a0ff
-      cursor: pointer
-
-      .small
-        font-size: 14px
-        color: #3a3a3a
-
-    .pdf
-      margin-top: 5px
-
   .content_box
-    padding: 20px
+    padding: 10px
     width: 100%
     height: auto
+    text-align: center
+    border-bottom: 1px solid silver
     .header
       margin-bottom: 10px
       width: 100%
-      height: 36px
-      line-height: 36px
+      height: auto
       .subtitle
-        font-size: 20px
-        font-weight: 900
-    .order_table
-      width: 100%
-      height: 100%
-
-.fr 
-  margin-left: 10px      
+        font-size: 30px
+        font-weight: 900    
 </style>
