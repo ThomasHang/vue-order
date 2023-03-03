@@ -1,7 +1,7 @@
 const OrderList = () => import('order/order-list/order-list')
 const Login = () => import('login/login')
-const GoodsList = () => import('goods/goods-list/goods-list')
-const GoodsDetail = () => import('goods/goods-detail/goods-detail')
+// const GoodsList = () => import('goods/goods-list/goods-list')
+// const GoodsDetail = () => import('goods/goods-detail/goods-detail')
 const OrderDetail = () => import('order/order-detail/order-detail')
 
 const routers = [
@@ -27,23 +27,23 @@ const routers = [
     },
   },
 
-  {
-    path: '/goods-list/:order_id',
-    name: 'GoodsList',
-    component: GoodsList,
-    meta: {
-      title: '商品列表'
-    },
-  },
+  // {
+  //   path: '/goods-list/:order_id',
+  //   name: 'GoodsList',
+  //   component: GoodsList,
+  //   meta: {
+  //     title: '商品列表'
+  //   },
+  // },
 
-  {
-    path: '/goods-detail/:order_id/:code',
-    name: 'GoodsDetail',
-    component: GoodsDetail,
-    meta: {
-      title: '商品详情页'
-    },
-  },
+  // {
+  //   path: '/goods-detail/:order_id/:code',
+  //   name: 'GoodsDetail',
+  //   component: GoodsDetail,
+  //   meta: {
+  //     title: '商品详情页'
+  //   },
+  // },
 
   {
     path: '/order-detail/:order_id',

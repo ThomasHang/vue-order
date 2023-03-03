@@ -9,6 +9,7 @@ node 版本 14.18.1
 ```bash
 npm install
 npm start
+npm run build
 ```
 - 测试账号/密码：test/1
 

@@ -85,7 +85,14 @@
 
       <div class="imglist">
         双方签约合同:
-        <div class="el-img-list" v-if="orderDetail.contractImages !== undefined && orderDetail.contractImages != null && orderDetail.contractImages.length > 0">
+        <div
+          class="el-img-list"
+          v-if="
+            orderDetail.contractImages !== undefined &&
+            orderDetail.contractImages != null &&
+            orderDetail.contractImages.length > 0
+          "
+        >
           <div
             class="el-img-list-item"
             v-for="img in orderDetail.contractImages"
@@ -123,68 +130,70 @@
               </viewer>
             </el-dialog>
           </div>
-        </div>
-             <!--上传图片-->
-        <div
+
+          <!--上传图片-->
+          <div
             class="item_i"
             @click="uploadDialog()"
             :style="{ display: saveDisplay }"
           >
             <i slot="default" class="el-icon-plus" />
           </div>
-          <el-dialog
-            class="dia"
-            :visible.sync="uploadDialogVisible"
-            style="z-index: 0"
-          >
-            <div slot="title" class="dia-title">选择需要上传的图片:</div>
-            <el-form>
-              <el-form-item prop="img" :rules="[]">
-                <el-upload
-                  ref="my-upload"
-                  :class="{ 'upload-img': dealImagesFileList.length }"
-                  action="#"
-                  list-type="picture-card"
-                  :auto-upload="false"
-                  :on-change="handleChange"
-                  :on-remove="handleRemove"
-                  :multiple="false"
-                  :file-list="dealImagesFileList"
-                  :limit="5"
-                  accept=".png, .jpg, .JPG, .JPEG, .jpeg, .PNG .GIF, .gif"
-                >
-                  <i slot="default" class="el-icon-plus" />
-                  <div
-                    style="width: 100%; height: 100%"
-                    slot="file"
-                    slot-scope="{ file }"
-                  >
-                    <img
-                      style="width: 100%; height: 100%"
-                      class="el-upload-list__item-thumbnail"
-                      :src="file.url"
-                      alt=""
-                    />
-                    <span class="el-upload-list__item-actions">
-                      <span
-                        class="el-upload-list__item-delete"
-                        @click="handleRemove(file)"
-                      >
-                        <i class="el-icon-delete" />
-                      </span>
-                    </span>
-                  </div>
-                </el-upload>
-              </el-form-item>
-            </el-form>
+        </div>
 
-            <el-button
-              class="btn_area_upload fr"
-              type="primary"
-              @click="saveUploadFile(orderDetail, 1)"
-              >确认上传</el-button
-            >
-          </el-dialog>
+        <el-dialog
+          class="dia"
+          :visible.sync="uploadDialogVisible"
+          style="z-index: 0"
+        >
+          <div slot="title" class="dia-title">选择需要上传的图片:</div>
+          <el-form>
+            <el-form-item prop="img" :rules="[]">
+              <el-upload
+                ref="my-upload"
+                :class="{ 'upload-img': dealImagesFileList.length }"
+                action="#"
+                list-type="picture-card"
+                :auto-upload="false"
+                :on-change="handleChange"
+                :on-remove="handleRemove"
+                :multiple="false"
+                :file-list="dealImagesFileList"
+                :limit="5"
+                accept=".png, .jpg, .JPG, .JPEG, .jpeg, .PNG .GIF, .gif"
+              >
+                <i slot="default" class="el-icon-plus" />
+                <div
+                  style="width: 100%; height: 100%"
+                  slot="file"
+                  slot-scope="{ file }"
+                >
+                  <img
+                    style="width: 100%; height: 100%"
+                    class="el-upload-list__item-thumbnail"
+                    :src="file.url"
+                    alt=""
+                  />
+                  <span class="el-upload-list__item-actions">
+                    <span
+                      class="el-upload-list__item-delete"
+                      @click="handleRemove(file)"
+                    >
+                      <i class="el-icon-delete" />
+                    </span>
+                  </span>
+                </div>
+              </el-upload>
+            </el-form-item>
+          </el-form>
+
+          <el-button
+            class="btn_area_upload fr"
+            type="primary"
+            @click="saveUploadFile(orderDetail, 1)"
+            >确认上传</el-button
+          >
+        </el-dialog>
       </div>
 
       <div class="item_li mt">
@@ -199,7 +208,14 @@
 
       <div class="imglist">
         发货图片:
-        <div class="el-img-list" v-if="orderDetail.deliverImages !== undefined && orderDetail.deliverImages != null && orderDetail.deliverImages.length > 0">
+        <div
+          class="el-img-list"
+          v-if="
+            orderDetail.deliverImages !== undefined &&
+            orderDetail.deliverImages != null &&
+            orderDetail.deliverImages.length > 0
+          "
+        >
           <div
             class="el-img-list-item"
             v-for="img in orderDetail.deliverImages"
@@ -208,7 +224,10 @@
             <el-image class="el-img-list__item-thumbnail" :src="getUrl(img)">
             </el-image>
             <span class="el-img-list__item-actions">
-              <span class="el-img-list__item-see_l" @click="openDeliverDialog(img)">
+              <span
+                class="el-img-list__item-see_l"
+                @click="openDeliverDialog(img)"
+              >
                 <i class="el-icon-zoom-in" />
               </span>
               <span
@@ -226,12 +245,11 @@
               height="100%"
               style="z-index: 0"
             >
-           
               <viewer :images="deliverUrlList">
                 <img
                   style="width: 100%; height: 100%"
-                  v-for="(item) in deliverUrlList"
-                  :key= "item"
+                  v-for="item in deliverUrlList"
+                  :key="item"
                   :src="getUrl(item)"
                   alt=""
                 />
@@ -239,14 +257,14 @@
             </el-dialog>
           </div>
         </div>
-          <!--上传图片-->
+        <!--上传图片-->
         <div
-            class="item_i"
-            @click="uploadDeliverDialog()"
-            :style="{ display: saveDisplay }"
-          >
-            <i slot="default" class="el-icon-plus" />
-            <el-dialog
+          class="item_i"
+          @click="uploadDeliverDialog()"
+          :style="{ display: saveDisplay }"
+        >
+          <i slot="default" class="el-icon-plus" />
+          <el-dialog
             class="dia"
             :visible.sync="uploadDeliverVisible"
             style="z-index: 0"
@@ -299,8 +317,7 @@
               >确认上传</el-button
             >
           </el-dialog>
-          </div>
-       
+        </div>
       </div>
 
       <div class="item_text mt">
@@ -390,16 +407,22 @@ export default {
       //   return process.env.BASE_API + "/new-order/IoReadImage/" + item;
       // }
 
-      if (item){
+      if (item) {
         return process.env.BASE_API + "/new-order/IoReadImage/" + item;
       }
     },
+    // 上传合同照片
     uploadDialog() {
       this.uploadDialogVisible = true;
     },
 
     uploadDeliverDialog() {
       this.uploadDeliverVisible = true;
+    },
+
+    onclose(param){
+      console.log("-------")
+      this.param = !param;
     },
 
     deleteOrder(sku) {
@@ -435,17 +458,17 @@ export default {
     saveOrderDetail(orderDetail) {
       var urlStringList = "";
       var urlDeliverStringList = "";
-      if (orderDetail.contractImages){
-      orderDetail.contractImages.map((item) => {
-        urlStringList += item + ",";
-      });
-    }
+      if (orderDetail.contractImages) {
+        orderDetail.contractImages.map((item) => {
+          urlStringList += item + ",";
+        });
+      }
 
-    if (orderDetail.deliverImages){
-      orderDetail.deliverImages.map((item) => {
-        urlDeliverStringList += item + ",";
-      });
-    }
+      if (orderDetail.deliverImages) {
+        orderDetail.deliverImages.map((item) => {
+          urlDeliverStringList += item + ",";
+        });
+      }
       const DATA = {
         id: orderDetail.id,
         startsTo: orderDetail.startsTo,
@@ -457,9 +480,13 @@ export default {
         contractAmount: orderDetail.contractAmount,
         prepayAmount: orderDetail.prepayAmount,
         pickupAmount: orderDetail.pickupAmount,
-        contractImages: urlStringList.length ===0 ?null : urlStringList.slice(0, -1),
+        contractImages:
+          urlStringList.length === 0 ? null : urlStringList.slice(0, -1),
         deliverDate: orderDetail.deliverDate,
-        deliverImages: urlDeliverStringList.length === 0 ?null : urlDeliverStringList.slice(0, -1),
+        deliverImages:
+          urlDeliverStringList.length === 0
+            ? null
+            : urlDeliverStringList.slice(0, -1),
         remark: orderDetail.remark,
       };
 
@@ -478,7 +505,6 @@ export default {
     },
 
     deleteImg(img, orderDetail, type) {
-      
       if (type == 1) {
         var list = orderDetail.contractImages;
 
@@ -487,7 +513,7 @@ export default {
             orderDetail.contractImages.splice(index, 1);
           }
         });
-     }
+      }
 
       if (type == 2) {
         var list = orderDetail.deliverImages;
@@ -506,8 +532,8 @@ export default {
       this.tpDialogVisible = true;
     },
 
-      //  查看图片预览
-      openDeliverDialog(url) {
+    //  查看图片预览
+    openDeliverDialog(url) {
       this.deliverUrlList.length = 0;
       this.deliverUrlList.push(url);
       this.tpDeliverVisible = true;
@@ -534,39 +560,25 @@ export default {
     // 保存压测的文件去修改展示
     saveUploadFile(orderDetail, type) {
       if (type == 1) {
-        console.log("执行了1")
+        var list = orderDetail.contractImages ? [] : orderDetail.contractImages;
         this.dealImagesUrlList.map((item) => {
-         if( orderDetail.contractImages){
-          console.log("执行了2true")
-          orderDetail.contractImages = [item.url];
-         }else{
-          console.log("执行了2flase")
-          orderDetail.contractImages.push(item.url);
-         }
+          list.push(item.url);
         });
-      
+        orderDetail.contractImages = list;
         this.uploadDialogVisible = false;
       }
 
       if (type == 2) {
-       
-        if (null == orderDetail.deliverImages) {
-          orderDetail.deliverImages = [];
-        }else{
+        var list = orderDetail.deliverImages ? [] : orderDetail.deliverImages;
         this.dealImagesUrlList.map((item) => {
-            orderDetail.deliverImage.push(item.url);
+          list.push(item.url);
         });
-      }
-
+        orderDetail.deliverImages = list;
         this.uploadDeliverVisible = false;
       }
       this.dealImagesUrlList = [];
       this.dealImagesFileList = [];
-
-      console.log("执行了3")
     },
-
-    //   this.$store.commit(UPDATE_ORDER_DETAIL_INDEX_VALUE, params);
   },
 };
 </script>
@@ -629,15 +641,17 @@ export default {
             right: 30px
             top: -4px
 .item_i
-  height: 148px
-  width: 148px
+  height: 80px
+  width: 80px
   border: 1px dotted
   margin: 10px
   border-radius: 10px
-  display: flex
+  display: inline-block
   justify-content: center
+  margin-top: 20px
 .el-icon-plus
-  line-height: 148px
+  line-height: 80px
+  width: 80px
   text-align: center
 .imglist
   padding-left: 80px
