@@ -229,7 +229,7 @@ export default {
       let fd = new FormData();
       //文件信息中raw才是真的文件
       fd.append("file", file.raw);
-      this.$http.put("/common/file/upload", fd).then((res) => {
+      this.$http.put("/common/file/upload/qiniu", fd).then((res) => {
         this.dealImagesUrlList.push({ old: file.url, url: res });
       });
     },

@@ -1,5 +1,5 @@
 <template>
-  <section id="home_page" v-loading.body="loading">
+  <div class="home_page" v-loading.body="loading">
     <header class="header_nav">
       <div class="container">
         <router-link to="/"
@@ -424,7 +424,11 @@
       >
       </el-pagination>
     </div>
-  </section>
+    <div class="footer">
+      <a href="https://beian.miit.gov.cn/" target="_blank">您的备案号</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank">苏ICP备2023006188号-1</a>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -697,18 +701,18 @@ export default {
       this._fetchOrderList();
     },
 
-    // 批量上传上传信息
-    uploadContractImages() {
-      let fd = new FormData();
-      fd.append("name", this.name);
-      this.contractImagesFileList.forEach((item) => {
-        //文件信息中raw才是真的文件
-        fd.append("files", item.raw);
-      });
-      this.$http.put("/common/file/upload/batch", fd).then((res) => {
-        this.$message("上传成功");
-      });
-    },
+    // // 批量上传上传信息
+    // uploadContractImages() {
+    //   let fd = new FormData();
+    //   fd.append("name", this.name);
+    //   this.contractImagesFileList.forEach((item) => {
+    //     //文件信息中raw才是真的文件
+    //     fd.append("files", item.raw);
+    //   });
+    //   this.$http.put("/common/file/upload/batch", fd).then((res) => {
+    //     this.$message("上传成功");
+    //   });
+    // },
 
     //通过onchanne触发方法获得文件列表
     handleChange(file) {
@@ -716,9 +720,8 @@ export default {
       let fd = new FormData();
       //文件信息中raw才是真的文件
       fd.append("file", file.raw);
-      this.$http.put("/common/file/upload", fd).then((res) => {
+      this.$http.put("/common/file/upload/qiniu", fd).then((res) => {
         this.contractImagesUrlList.push({ old: file.url, url: res });
-        // this.contractImagesUrlList.push({ oldUrl: file.url, url: res });
       });
     },
 
@@ -735,7 +738,7 @@ export default {
       let fd = new FormData();
       //文件信息中raw才是真的文件
       fd.append("file", file.raw);
-      this.$http.put("/common/file/upload", fd).then((res) => {
+      this.$http.put("/common/file/upload/qiniu", fd).then((res) => {
         this.deliverImagesUrlList.push({ oldUrl: file.url, url: res });
       });
     },
@@ -750,6 +753,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.home_page{
+  height: 100%;
+  width: 100%;
+}
 .header_nav {
   padding: 0 30px;
   width: 100%;
@@ -783,6 +791,7 @@ export default {
   margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
+  height: 650px;
 
   .order_box {
     margin-bottom: 10px;
@@ -867,4 +876,13 @@ export default {
 .need-notice {
   color: yellow;
 }
+
+.footer {
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            background-color: #eee;
+            z-index: 9999;
+            clear: both;
+        }
 </style>
