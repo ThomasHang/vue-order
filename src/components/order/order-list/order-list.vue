@@ -721,15 +721,17 @@ export default {
       //文件信息中raw才是真的文件
       fd.append("file", file.raw);
       this.$http.put("/common/file/upload/qiniu", fd).then((res) => {
-        this.contractImagesUrlList.push({ old: file.url, url: res });
+        this.contractImagesUrlList.push(res);
       });
     },
 
     //通过onchanne触发方法获得文件列表
     handleRemove(file) {
-      this.contractImagesFileList.removeItem(file);
-      const index2 = this.contractImagesUrlList.indexOf(file.url);
-      this.contractImagesUrlList.splice(index2 - 1, 1);
+     const index1 =  this.contractImagesFileList.indexOf(file);
+     this.contractImagesFileList.splice(index1, 1);
+
+      const index2 = this.contractImagesUrlList.indexOf(file.name);
+      this.contractImagesUrlList.splice(index2, 1);
     },
 
     //通过onchanne触发方法获得文件列表
