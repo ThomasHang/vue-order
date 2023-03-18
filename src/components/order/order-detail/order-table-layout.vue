@@ -85,62 +85,9 @@
 
       <div class="imglist">
         双方签约合同:
-        <div
-          class="el-img-list"
-          v-if="
-            orderDetail.contractImages !== undefined &&
-            orderDetail.contractImages != null &&
-            orderDetail.contractImages.length > 0
-          "
-        >
-          <div
-            class="el-img-list-item"
-            v-for="img in orderDetail.contractImages"
-            :key="img"
-          >
-            <el-image class="el-img-list__item-thumbnail" :src="getUrl(img)">
-            </el-image>
-            <span class="el-img-list__item-actions">
-              <span class="el-img-list__item-see_l" @click="openDialog(img)">
-                <i class="el-icon-zoom-in" />
-              </span>
-              <span
-                class="el-img-list__item-see_r"
-                @click="deleteImg(img, orderDetail, 1)"
-                :style="{ display: saveDisplay }"
-              >
-                <i class="el-icon-delete" />
-              </span>
-            </span>
-            <el-dialog
-              title="图像预览"
-              :visible.sync="tpDialogVisible"
-              width="100%"
-              height="100%"
-              style="z-index: 0"
-            >
-              <viewer :images="urlList">
-                <img
-                  style="width: 100%; height: 100%"
-                  v-for="item in urlList"
-                  :key="item"
-                  :src="getUrl(item)"
-                  alt=""
-                />
-              </viewer>
-            </el-dialog>
-          </div>
-
-          <!--上传图片-->
-          <div
-            class="item_i"
-            @click="uploadDialog()"
-            :style="{ display: saveDisplay }"
-          >
-            <i slot="default" class="el-icon-plus" />
-          </div>
-        </div>
-
+           <!--上传图片-->
+          <el-button :style="{ display: saveDisplay }" @click="uploadDialog()" type="primary">上传图片</el-button>
+  
         <el-dialog
           class="dia"
           :visible.sync="uploadDialogVisible"
@@ -194,6 +141,54 @@
             >确认上传</el-button
           >
         </el-dialog>
+        <div
+          class="el-img-list"
+          v-if="
+            orderDetail.contractImages !== undefined &&
+            orderDetail.contractImages != null &&
+            orderDetail.contractImages.length > 0
+          "
+        >
+          <div
+            class="el-img-list-item"
+            v-for="img in orderDetail.contractImages"
+            :key="img"
+          >
+            <el-image class="el-img-list__item-thumbnail" :src="getUrl(img)">
+            </el-image>
+            <!--预览-->
+            <span class="el-img-list__item-actions">
+              <span class="el-img-list__item-see_l" @click="openDialog(img)">
+                <i class="el-icon-zoom-in" />
+              </span>
+              <span
+                class="el-img-list__item-see_r"
+                @click="deleteImg(img, orderDetail, 1)"
+                :style="{ display: saveDisplay }"
+              >
+                <i class="el-icon-delete" />
+              </span>
+            </span>
+            <el-dialog
+              title="图像预览"
+              :visible.sync="tpDialogVisible"
+              width="100%"
+              height="100%"
+              style="z-index: 0"
+            >
+              <viewer :images="urlList">
+                <img
+                  style="width: 100%; height: 100%"
+                  v-for="item in urlList"
+                  :key="item"
+                  :src="getUrl(item)"
+                  alt=""
+                />
+              </viewer>
+            </el-dialog>
+          </div>
+        </div>
+     
       </div>
 
       <div class="item_li mt">
@@ -208,62 +203,13 @@
 
       <div class="imglist">
         发货图片:
-        <div
-          class="el-img-list"
-          v-if="
-            orderDetail.deliverImages !== undefined &&
-            orderDetail.deliverImages != null &&
-            orderDetail.deliverImages.length > 0
-          "
-        >
-          <div
-            class="el-img-list-item"
-            v-for="img in orderDetail.deliverImages"
-            :key="img"
-          >
-            <el-image class="el-img-list__item-thumbnail" :src="getUrl(img)">
-            </el-image>
-            <span class="el-img-list__item-actions">
-              <span
-                class="el-img-list__item-see_l"
-                @click="openDeliverDialog(img)"
-              >
-                <i class="el-icon-zoom-in" />
-              </span>
-              <span
-                class="el-img-list__item-see_r"
-                @click="deleteImg(img, orderDetail, 2)"
-                :style="{ display: saveDisplay }"
-              >
-                <i class="el-icon-delete" />
-              </span>
-            </span>
-            <el-dialog
-              title="图像预览"
-              :visible.sync="tpDeliverVisible"
-              width="100%"
-              height="100%"
-              style="z-index: 0"
-            >
-              <viewer :images="deliverUrlList">
-                <img
-                  style="width: 100%; height: 100%"
-                  v-for="item in deliverUrlList"
-                  :key="item"
-                  :src="getUrl(item)"
-                  alt=""
-                />
-              </viewer>
-            </el-dialog>
-          </div>
-        </div>
         <!--上传图片-->
-        <div
-          class="item_i"
-          @click="uploadDeliverDialog()"
-          :style="{ display: saveDisplay }"
-        >
-          <i slot="default" class="el-icon-plus" />
+          <el-button
+            :style="{ display: saveDisplay }"
+            @click="uploadDeliverDialog()"
+            type="primary"
+            >上传图片</el-button
+          >
           <el-dialog
             class="dia"
             :visible.sync="uploadDeliverVisible"
@@ -317,6 +263,55 @@
               >确认上传</el-button
             >
           </el-dialog>
+        
+        <div
+          class="el-img-list"
+          v-if="
+            orderDetail.deliverImages !== undefined &&
+            orderDetail.deliverImages != null &&
+            orderDetail.deliverImages.length > 0
+          "
+        >
+          <div
+            class="el-img-list-item"
+            v-for="img in orderDetail.deliverImages"
+            :key="img"
+          >
+            <el-image class="el-img-list__item-thumbnail" :src="getUrl(img)">
+            </el-image>
+            <span class="el-img-list__item-actions">
+              <span
+                class="el-img-list__item-see_l"
+                @click="openDeliverDialog(img)"
+              >
+                <i class="el-icon-zoom-in" />
+              </span>
+              <span
+                class="el-img-list__item-see_r"
+                @click="deleteImg(img, orderDetail, 2)"
+                :style="{ display: saveDisplay }"
+              >
+                <i class="el-icon-delete" />
+              </span>
+            </span>
+            <el-dialog
+              title="图像预览"
+              :visible.sync="tpDeliverVisible"
+              width="100%"
+              height="100%"
+              style="z-index: 0"
+            >
+              <viewer :images="deliverUrlList">
+                <img
+                  style="width: 100%; height: 100%"
+                  v-for="item in deliverUrlList"
+                  :key="item"
+                  :src="getUrl(item)"
+                  alt=""
+                />
+              </viewer>
+            </el-dialog>
+          </div>
         </div>
       </div>
 
@@ -407,8 +402,12 @@ export default {
       //   return process.env.BASE_API + "/new-order/IoReadImage/" + item;
       // }
 
+      // if (item) {
+      //   return process.env.BASE_API + "/new-order/IoReadImage/" + item;
+      // }
+
       if (item) {
-        return process.env.BASE_API + "/new-order/IoReadImage/" + item;
+        return "http://img.geweijian.top/" + item;
       }
     },
     // 上传合同照片
@@ -420,8 +419,7 @@ export default {
       this.uploadDeliverVisible = true;
     },
 
-    onclose(param){
-      console.log("-------")
+    onclose(param) {
       this.param = !param;
     },
 
@@ -546,34 +544,41 @@ export default {
       //文件信息中raw才是真的文件
       fd.append("file", file.raw);
       this.$http.put("/common/file/upload/qiniu", fd).then((res) => {
-        this.dealImagesUrlList.push({ old: file.url, url: res });
+        this.dealImagesUrlList.push(res);
       });
     },
 
     //删除文件
     handleRemove(file) {
-      const index2 = this.dealImagesUrlList.indexOf(file.url);
-      this.dealImagesUrlList.splice(index2 - 1, 1);
-      this.dealImagesFileList.splice(index2 - 1, 1);
+      const index1 = this.dealImagesFileList.indexOf(file);
+      this.dealImagesFileList.splice(index1, 1);
+
+      const index2 = this.dealImagesUrlList.indexOf(file.name);
+      this.dealImagesUrlList.splice(index2, 1);
     },
 
     // 保存压测的文件去修改展示
     saveUploadFile(orderDetail, type) {
       if (type == 1) {
-        var list = orderDetail.contractImages ? [] : orderDetail.contractImages;
+        orderDetail.contractImages = orderDetail.contractImages
+          ? orderDetail.contractImages
+          : [];
+
         this.dealImagesUrlList.map((item) => {
-          list.push(item.url);
+          orderDetail.contractImages.push(item);
         });
-        orderDetail.contractImages = list;
         this.uploadDialogVisible = false;
       }
 
       if (type == 2) {
-        var list = orderDetail.deliverImages ? [] : orderDetail.deliverImages;
+        orderDetail.deliverImages = orderDetail.deliverImages
+          ? orderDetail.deliverImages
+          : [];
+
         this.dealImagesUrlList.map((item) => {
-          list.push(item.url);
+          orderDetail.deliverImages.push(item);
         });
-        orderDetail.deliverImages = list;
+        // orderDetail.deliverImages = list;
         this.uploadDeliverVisible = false;
       }
       this.dealImagesUrlList = [];

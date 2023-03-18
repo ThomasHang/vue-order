@@ -52,11 +52,11 @@ export default {
       contractAmount: "",
       prepayAmount: "",
       pickupAmount: "",
-      contractImages: "",
+      contractImages: [],
       deliverDate: "",
       deliverImages: "",
       remark: "",
-      deliverImages: "",
+      deliverImages: [],
       dialogCommentForm: false,
       dialogSaveForm: false,
     };

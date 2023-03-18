@@ -156,8 +156,12 @@ export default {
       //   return process.env.BASE_API + "/new-order/IoReadImage/" + item;
       // }
 
+      // if (item) {
+      //   return process.env.BASE_API + "/new-order/IoReadImage/" + item;
+      // }
+
       if (item) {
-        return process.env.BASE_API + "/new-order/IoReadImage/" + item;
+        return "http://img.geweijian.top/" + item;
       }
     },
     // 上传合同照片

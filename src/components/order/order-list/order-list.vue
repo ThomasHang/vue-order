@@ -26,66 +26,80 @@
           >下载订单</el-button
         >
 
+        <!-- 创建订单的弹窗 -->
         <el-dialog title="请输入订单信息" :visible.sync="dialogFormVisible">
-          序号:<el-input
-            v-model="id"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入序号"
-          ></el-input>
-          开工令:<el-input
-            v-model="startsTo"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入开工令"
-          ></el-input>
-          企业名称:<el-input
-            v-model="companyName"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入企业名称"
-          ></el-input>
+          <el-form ref="form">
+            <el-form-item>
+              序号:<el-input
+                v-model="id"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入序号"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              开工令:<el-input
+                v-model="startsTo"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入开工令"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              企业名称:<el-input
+                v-model="companyName"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入企业名称"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              联系人:<el-input
+                v-model="contractPerson"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入联系人"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              联系电话:<el-input
+                v-model="contractPhone"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入联系电话"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              开票资料:<el-input
+                v-model="invoiceInfo"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入开票资料"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              合同生效期:<el-date-picker
+                v-model="validateDate"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入合同生效期"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item>
+              合同金额:<el-input-number
+                v-model="contractAmount"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入合同金额"
+              ></el-input-number>
+            </el-form-item>
+            <el-form-item>
+              预付款:<el-input-number
+                v-model="prepayAmount"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入预付款"
+              ></el-input-number>
+            </el-form-item>
+            <el-form-item>
+              提货款:<el-input-number
+                v-model="pickupAmount"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入提货款"
+              ></el-input-number>
+            </el-form-item>
 
-          联系人:<el-input
-            v-model="contractPerson"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入联系人"
-          ></el-input>
-
-          联系电话:<el-input
-            v-model="contractPhone"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入联系电话"
-          ></el-input>
-
-          开票资料:<el-input
-            v-model="invoiceInfo"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入开票资料"
-          ></el-input>
-
-          合同生效期:<el-date-picker
-            v-model="validateDate"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入合同生效期"
-          ></el-date-picker>
-
-          合同金额:<el-input-number
-            v-model="contractAmount"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入合同金额"
-          ></el-input-number>
-
-          预付款:<el-input-number
-            v-model="prepayAmount"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入预付款"
-          ></el-input-number>
-
-          提货款:<el-input-number
-            v-model="pickupAmount"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入提货款"
-          ></el-input-number>
-
-          <el-form>
             <el-form-item label="双方盖章合同:" prop="img" :rules="[]">
               <el-upload
                 ref="my-upload"
@@ -123,15 +137,14 @@
                 </div>
               </el-upload>
             </el-form-item>
-          </el-form>
+            <el-form-item>
+              交货日期:<el-date-picker
+                v-model="deliverDate"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入交货日期"
+              ></el-date-picker>
+            </el-form-item>
 
-          交货日期:<el-date-picker
-            v-model="deliverDate"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入交货日期"
-          ></el-date-picker>
-
-          <el-form>
             <el-form-item label="发货照片:" prop="img" :rules="[]">
               <el-upload
                 ref="my-upload"
@@ -140,10 +153,10 @@
                 list-type="picture-card"
                 :auto-upload="false"
                 :on-change="handleDeliverChange"
-                :on-remove="handleRemove"
+                :on-remove="handleDeliverRemove"
                 :multiple="false"
                 :file-list="deliverImagesFileList"
-                :limit="1"
+                :limit="5"
                 accept=".png, .jpg, .JPG, .JPEG, .jpeg, .PNG .GIF, .gif"
               >
                 <i slot="default" class="el-icon-plus" />
@@ -161,7 +174,7 @@
                   <span class="el-upload-list__item-actions">
                     <span
                       class="el-upload-list__item-delete"
-                      @click="handleDeliversRemove(file)"
+                      @click="handleDeliverRemove(file)"
                     >
                       <i class="el-icon-delete" />
                     </span>
@@ -169,20 +182,22 @@
                 </div>
               </el-upload>
             </el-form-item>
+            <el-form-item>
+              备注:<el-input
+                type="textarea"
+                :autosize="{ minRows: 2, maxRows: 4 }"
+                v-model="remark"
+                @keyup.enter.native="addOrder"
+                placeholder="请输入备注"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+            <!-- <div slot="footer" class="dialog-footer"> -->
+              <el-button class="fr" type="primary" @click="cancelAdd">取 消</el-button>
+              <el-button class="fr" type="primary" @click="addOrder">确 定</el-button>
+            <!-- </div> -->
+            </el-form-item>
           </el-form>
-
-          备注:<el-input
-            type="textarea"
-            :autosize="{ minRows: 2, maxRows: 4 }"
-            v-model="remark"
-            @keyup.enter.native="addOrder"
-            placeholder="请输入备注"
-          ></el-input>
-
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="addOrder">确 定</el-button>
-          </div>
         </el-dialog>
 
         <!--发货的弹窗-->
@@ -211,10 +226,10 @@
                 list-type="picture-card"
                 :auto-upload="false"
                 :on-change="handleDeliverChange"
-                :on-remove="handleRemove"
+                :on-remove="handleDeliverRemove"
                 :multiple="false"
                 :file-list="deliverImagesFileList"
-                :limit="1"
+                :limit="5"
                 accept=".png, .jpg, .JPG, .JPEG, .jpeg, .PNG .GIF, .gif"
               >
                 <i slot="default" class="el-icon-plus" />
@@ -232,7 +247,7 @@
                   <span class="el-upload-list__item-actions">
                     <span
                       class="el-upload-list__item-delete"
-                      @click="handleDeliversRemove(file)"
+                      @click="handleDeliverRemove(file)"
                     >
                       <i class="el-icon-delete" />
                     </span>
@@ -425,8 +440,10 @@
       </el-pagination>
     </div>
     <div class="footer">
-      <a href="https://beian.miit.gov.cn/" target="_blank">您的备案号</a>
-      <a href="https://beian.miit.gov.cn/" target="_blank">苏ICP备2023006188号-1</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank">备案号</a>
+      <a href="https://beian.miit.gov.cn/" target="_blank"
+        >苏ICP备2023006188号-1</a
+      >
     </div>
   </div>
 </template>
@@ -514,6 +531,16 @@ export default {
   },
 
   methods: {
+    cancelAdd() {
+      this.dialogFormVisible = false;
+
+      // 这段代码没有生效
+      this.$nextTick(() => {
+        // form对应你写的<el-form ref="form"></el-form>
+        this.$refs["form"].resetFields(); 
+      });
+    },
+
     addOrder() {
       // if (!this.id) {
       //   this.$message.error("请输入序号！", "error");
@@ -727,8 +754,8 @@ export default {
 
     //通过onchanne触发方法获得文件列表
     handleRemove(file) {
-     const index1 =  this.contractImagesFileList.indexOf(file);
-     this.contractImagesFileList.splice(index1, 1);
+      const index1 = this.contractImagesFileList.indexOf(file);
+      this.contractImagesFileList.splice(index1, 1);
 
       const index2 = this.contractImagesUrlList.indexOf(file.name);
       this.contractImagesUrlList.splice(index2, 1);
@@ -741,22 +768,23 @@ export default {
       //文件信息中raw才是真的文件
       fd.append("file", file.raw);
       this.$http.put("/common/file/upload/qiniu", fd).then((res) => {
-        this.deliverImagesUrlList.push({ oldUrl: file.url, url: res });
+        this.deliverImagesUrlList.push(res);
       });
     },
 
     //通过onchanne触发方法获得文件列表
     handleDeliverRemove(file) {
-      const index2 = this.deliverImagesFileList.indexOf(file.url);
-      this.deliverImagesUrlList.splice(index2 - 1, 1);
+      const index1 = this.deliverImagesFileList.indexOf(file);
+      this.deliverImagesFileList.splice(index1, 1);
+      const index2 = this.deliverImagesUrlList.indexOf(file.name);
+      this.deliverImagesUrlList.splice(index2, 1);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-
-.home_page{
+.home_page {
   height: 100%;
   width: 100%;
 }
@@ -880,11 +908,11 @@ export default {
 }
 
 .footer {
-            height: 60px;
-            line-height: 60px;
-            text-align: center;
-            background-color: #eee;
-            z-index: 9999;
-            clear: both;
-        }
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  background-color: #eee;
+  z-index: 9999;
+  clear: both;
+}
 </style>
