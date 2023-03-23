@@ -1,3 +1,4 @@
+
 <template>
   <div id="app">
     <router-view></router-view>
@@ -9,3 +10,9 @@
     name: 'App',
   }
 </script>
+
+<style>
+#id{
+  height: 100%;
+}
+</style>

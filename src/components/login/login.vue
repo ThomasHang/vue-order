@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login_box">
     <div class="login_container">
       <el-form :label-position="labelPosition" label-width="50px" :model="formLabelAlign">
         <el-form-item label="账号">
@@ -58,11 +58,17 @@ import { TOKEN } from "store/mutation-types";
   }
 </script>
 <style scoped>
+.login_box{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
   .login_container {
-    padding-top: 30vh;
-    height: 70vh;
+    /* padding-top: 30vh; */
+    /* height: 70vh; */
     margin: auto;
-    width: 250px;
+    /* width: 250px; */
   }
 
   .submit_btn {
